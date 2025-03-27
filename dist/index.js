@@ -1,6 +1,6 @@
-const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), k = ({ url: d, video: n }) => {
-  const i = new EventTarget();
-  let t, r = !0, c = 0, o = 0;
+const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), O = ({ url: d, video: n }) => {
+  const c = new EventTarget();
+  let e, r = !0, i = 0, o = 0;
   n.addEventListener("play", async () => {
     [
       0,
@@ -9,35 +9,35 @@ const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), k = ({ url: d
       7,
       5
       /* STREAM_DISCONNECTED */
-    ].includes(c) && (!t || t.iceConnectionState !== "connected") && (await f(), c = 3, await l());
+    ].includes(i) && (!e || e.iceConnectionState !== "connected") && (await f(), i = 3, await l());
   }), n.addEventListener("pause", async () => {
-    c = 2;
+    i = 2;
   });
   const w = async () => {
-    (t == null ? void 0 : t.connectionState) === "failed" ? (i.dispatchEvent(new Event(
+    (e == null ? void 0 : e.connectionState) === "failed" ? (c.dispatchEvent(new Event(
       "player_error"
       /* ERROR */
-    )), c = 6, t && t.close()) : (t == null ? void 0 : t.connectionState) === "connected" ? (c = 4, i.dispatchEvent(new Event(
+    )), i = 6, e && e.close()) : (e == null ? void 0 : e.connectionState) === "connected" ? (i = 4, c.dispatchEvent(new Event(
       "connected"
       /* CONNECTED */
-    ))) : (t == null ? void 0 : t.connectionState) === "disconnected" && (c = 5, i.dispatchEvent(new Event(
+    ))) : (e == null ? void 0 : e.connectionState) === "disconnected" && (i = 5, c.dispatchEvent(new Event(
       "disconnected"
       /* DISCONNECTED */
     )), await u());
-  }, y = async (e) => {
-    for (const a of e.streams)
+  }, y = async (t) => {
+    for (const a of t.streams)
       if (a.id !== "feedbackvideomslabel") {
         !n.srcObject && !n.paused && (n.srcObject = new MediaStream());
         for (const s of a.getTracks())
           n.srcObject.addTrack(s);
       }
-  }, p = async (e) => {
-    e.type !== "icecandidate" || e.candidate;
+  }, p = async (t) => {
+    t.type !== "icecandidate" || t.candidate;
   }, l = async () => {
-    if (!t)
+    if (!e)
       return;
-    const e = t.localDescription;
-    if (!e || t.signalingState !== "have-local-offer")
+    const t = e.localDescription;
+    if (!t || e.signalingState !== "have-local-offer")
       return;
     let a;
     const s = 5;
@@ -47,32 +47,32 @@ const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), k = ({ url: d
         headers: {
           "Content-Type": "application/sdp"
         },
-        body: e.sdp
+        body: t.sdp
       }), a != null && a.ok) {
         const b = await a.text();
-        await t.setRemoteDescription({
+        await e.setRemoteDescription({
           type: "answer",
           sdp: b
         }), o = 0;
       } else
         await m(), o++;
-    o >= s && (c = 7, i.dispatchEvent(new Event(
+    o >= s && (i = 7, c.dispatchEvent(new Event(
       "retries_exceeded"
       /* RETRIES_EXCEEDED */
-    )), n.srcObject = new MediaStream(), n.pause(), t && t.restartIce(), t && t.close()), o = 0;
+    )), n.srcObject = new MediaStream(), n.pause(), e && e.restartIce(), e && e.close()), o = 0;
   }, h = async () => {
-    (t == null ? void 0 : t.iceGatheringState) === "complete" || !r || t && await g();
-  }, g = async () => {
+    (e == null ? void 0 : e.iceGatheringState) === "complete" || !r || e && await E();
+  }, E = async () => {
     r = !1;
-  }, v = async () => {
-    t == null || t.addTransceiver("video", { direction: "recvonly" }), t == null || t.addTransceiver("audio", { direction: "recvonly" });
-    const e = await (t == null ? void 0 : t.createOffer({
+  }, g = async () => {
+    e == null || e.addTransceiver("video", { direction: "recvonly" }), e == null || e.addTransceiver("audio", { direction: "recvonly" });
+    const t = await (e == null ? void 0 : e.createOffer({
       offerToReceiveAudio: !0,
       offerToReceiveVideo: !0
     }));
-    if (t && e != null && e.sdp) {
-      const a = e.sdp.match(/a=rtpmap:(\d+) opus\/48000\/2/);
-      a !== null && (e.sdp = e.sdp.replace(
+    if (e && t != null && t.sdp) {
+      const a = t.sdp.match(/a=rtpmap:(\d+) opus\/48000\/2/);
+      a !== null && (t.sdp = t.sdp.replace(
         `opus/48000/2\r
 `,
         `opus/48000/2\r
@@ -80,40 +80,43 @@ a=rtcp-fb:` + a[1] + ` nack\r
 `
       ));
     }
-    await (t == null ? void 0 : t.setLocalDescription(e));
+    await (e == null ? void 0 : e.setLocalDescription(t));
   }, f = async () => {
-    t && (t.close(), t.onconnectionstatechange = null, t.onicegatheringstatechange = null, t.onicecandidate = null, t = null), t = new RTCPeerConnection({
+    e && (e.close(), e.onconnectionstatechange = null, e.onicegatheringstatechange = null, e.onicecandidate = null, e = null), e = new RTCPeerConnection({
       iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-    }), t.onconnectionstatechange = w.bind(void 0), t.onicegatheringstatechange = h.bind(void 0), t.onicecandidate = p.bind(void 0), t.ontrack = y.bind(void 0);
+    }), e.onconnectionstatechange = w.bind(void 0), e.onicegatheringstatechange = h.bind(void 0), e.onicecandidate = p.bind(void 0), e.ontrack = y.bind(void 0);
     try {
-      await v();
+      await g();
     } catch {
     }
-  }, E = async () => {
+  }, v = async () => {
     try {
       await n.play();
     } catch {
-      c = 1, i.dispatchEvent(new Event(
+      i = 1, c.dispatchEvent(new Event(
         "autoplay_disabled"
         /* AUTOPLAYDISABLED */
       )), n.srcObject = new MediaStream(), n.pause();
     }
   }, u = async () => {
-    c === 5 && (await f(), n.srcObject = new MediaStream(), await l()), await E();
+    i === 5 && (await f(), n.srcObject = new MediaStream(), await l()), await v();
   };
   return {
     load: u,
-    onConnected: (e) => {
-      i.addEventListener("connected", e);
+    onConnected: (t) => {
+      c.addEventListener("connected", t);
     },
-    onDisabledAutoplay: (e) => {
-      i.addEventListener("autoplay_disabled", e);
+    onDisabledAutoplay: (t) => {
+      c.addEventListener("autoplay_disabled", t);
     },
-    onError: (e) => {
-      i.addEventListener("player_error", e);
+    onError: (t) => {
+      c.addEventListener("player_error", t);
+    },
+    onRetriesExceeced: (t) => {
+      c.addEventListener("retries_exceeded", t);
     }
   };
 };
 export {
-  k as WhepPlayer
+  O as WhepPlayer
 };

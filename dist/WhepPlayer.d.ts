@@ -2,6 +2,7 @@ type WhepPlayer = {
     load(): void;
     onError(callback: (event: Event) => void): void;
     onConnected(callback: (event: Event) => void): void;
+    onRetriesExceeced(callback: (event: Event) => void): void;
     onDisabledAutoplay(callback: (event: Event) => void): void;
 };
 type WhepPlayerOptions = {

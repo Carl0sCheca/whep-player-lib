@@ -2,6 +2,7 @@ type WhepPlayer = {
   load(): void;
   onError(callback: (event: Event) => void): void;
   onConnected(callback: (event: Event) => void): void;
+  onRetriesExceeced(callback: (event: Event) => void): void;
   onDisabledAutoplay(callback: (event: Event) => void): void;
 };
 
@@ -277,10 +278,15 @@ export const WhepPlayer = ({ url, video }: WhepPlayerOptions): WhepPlayer => {
     eventTarget.addEventListener(PlayerEvents.CONNECTED, callback);
   };
 
+  const onRetriesExceeced = (callback: (event: Event) => void) => {
+    eventTarget.addEventListener(PlayerEvents.RETRIES_EXCEEDED, callback);
+  };
+
   return {
     load,
     onConnected,
     onDisabledAutoplay,
     onError,
+    onRetriesExceeced,
   };
 };
