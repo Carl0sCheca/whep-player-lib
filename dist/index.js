@@ -1,4 +1,7 @@
-const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), O = ({ url: d, video: n }) => {
+const m = async (d = 5e3) => new Promise((n) => setTimeout(n, d)), O = ({
+  url: d,
+  video: n
+}) => {
   const c = new EventTarget();
   let e, r = !0, i = 0, o = 0;
   n.addEventListener("play", async () => {
@@ -118,5 +121,5 @@ a=rtcp-fb:` + a[1] + ` nack\r
   };
 };
 export {
-  O as WhepPlayer
+  O as WhepPlayerInstance
 };

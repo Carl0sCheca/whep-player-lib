@@ -1,4 +1,4 @@
-type WhepPlayer = {
+export type WhepPlayer = {
   load(): void;
   onError(callback: (event: Event) => void): void;
   onConnected(callback: (event: Event) => void): void;
@@ -36,7 +36,10 @@ const wait = async (delay: number = 5000): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
-export const WhepPlayer = ({ url, video }: WhepPlayerOptions): WhepPlayer => {
+export const WhepPlayerInstance = ({
+  url,
+  video,
+}: WhepPlayerOptions): WhepPlayer => {
   const eventTarget = new EventTarget();
 
   let peer: RTCPeerConnection | null;

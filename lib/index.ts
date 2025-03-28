@@ -1,1 +1,1 @@
-export { WhepPlayer } from "./WhepPlayer";
+export { type WhepPlayer, WhepPlayerInstance } from "./WhepPlayer";
