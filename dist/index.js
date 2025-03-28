@@ -112,7 +112,7 @@ a=rtcp-fb:` + a[1] + ` nack\r
     onError: (t) => {
       c.addEventListener("player_error", t);
     },
-    onRetriesExceeced: (t) => {
+    onRetriesExceeded: (t) => {
       c.addEventListener("retries_exceeded", t);
     }
   };
