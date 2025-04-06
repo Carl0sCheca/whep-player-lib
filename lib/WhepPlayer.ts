@@ -1,9 +1,11 @@
 export type WhepPlayer = {
-  load(): void;
+  load(): Promise<void>;
+  unload(): Promise<void>;
   onError(callback: (event: Event) => void): void;
   onConnected(callback: (event: Event) => void): void;
   onRetriesExceeded(callback: (event: Event) => void): void;
   onDisabledAutoplay(callback: (event: Event) => void): void;
+  onDisconnected(callback: (event: Event) => void): void;
 };
 
 type WhepPlayerOptions = {
@@ -269,6 +271,19 @@ export const WhepPlayerInstance = ({
     await play();
   };
 
+  const unload = async () => {
+    if (peer) {
+      peer.onconnectionstatechange = null;
+      peer.onicegatheringstatechange = null;
+      peer.onicecandidate = null;
+      peer.close();
+      peer = null;
+    }
+
+    playerStatus = WhepPlayerStatus.STREAM_DISCONNECTED;
+    eventTarget.dispatchEvent(new Event(PlayerEvents.DISCONNECTED));
+  };
+
   const onError = (callback: (event: Event) => void) => {
     eventTarget.addEventListener(PlayerEvents.ERROR, callback);
   };
@@ -285,11 +300,17 @@ export const WhepPlayerInstance = ({
     eventTarget.addEventListener(PlayerEvents.RETRIES_EXCEEDED, callback);
   };
 
+  const onDisconnected = (callback: (event: Event) => void) => {
+    eventTarget.addEventListener(PlayerEvents.DISCONNECTED, callback);
+  };
+
   return {
     load,
+    unload,
     onConnected,
     onDisabledAutoplay,
     onError,
     onRetriesExceeded,
+    onDisconnected,
   };
 };
